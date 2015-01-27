@@ -83,7 +83,7 @@ class: center
 i.e. how the webpage looks.
 - **Javascript** is a programming language that defines how the page behaves.
 It interacts with the user, sends and receives data from a webserver,
-modifies the HTML and CSS of the webpage and even do things like 3D graphics.
+modifies the HTML and CSS of the webpage and can even do things like 3D graphics.
 
 .center[HTML and CSS are **.red[not]** programming languages.]
 
@@ -105,4 +105,98 @@ em {
   color: red;
 }
 ```
+
+---
+
+# What is HTML?
+* The standard markup language to create webpages, initially released in 1993.
+* Is a series of HTLM elements consisting of tags, for example:
+  * `<h1>CubeSat</h1>` - Header (title)
+  * `<img src='images/tesla.jpg' alt='Tesla Model S' />` - an image
+  * `<a href='https://cubesat.ic.ac.uk'>Imperial Cubesat</a>` - a link
+* Good HTML defines content and gives meaning, but does not describe
+how the webpage will look.
+--
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Example HTML Page</title>
+</head>
+<body>
+  <header class='main'>
+    <h1>This is an example HTML page</h1>
+  </header>
+    <span class='acronym'>HTML</span> is <em>wonderful</em>.
+    Here's a link to <a href='https://google.com'>google</a>
+  </section>
+</body>
+</html>
+```
+---
+# What is CSS?
+* A stylesheet language introduced in 1995, used to define how
+a webpage should look.
+* Can be included directly in HTML `<style>` tags or referenced from an
+external .css file
+* Is a series of rules of the type *All header elements should be bold and red"
+
+--
+
+```css
+h1 {
+  font-style: Sans-serif;
+  color: red;
+  font-weight: bold;
+}
+
+* em.somestyleclass {
+  font-style: italic;
+  color: blue;
+}
+```
+
+--
+
+* We can specify IDs and classes for HTML elements, that we can then use
+in stylesheets to define how they'll look.
+
+```html
+<em class='somestyleclass'> This will be italic and blue </em>
+```
+
+---
+
+# What is Javascript?
+
+* Javascript is a programming language introduced in 1995,
+intended to be included in webpages. Javascript **can run inside the browser**
+and all modern browsers support javascript.
+* Like CSS, it can be included directly in an HTML `<script>` tag,
+or referenced from a .js file.
+* Dynamic, duck typing. Not really objected oriented, but
+similar to OOP languages.
+
+--
+
+```javascript
+function isPrime(x) {
+  for(var i=2;i<x;i++) {
+    if(x % i == 0) return false;
+  }
+  return true;
+}
+console.log([1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(isPrime));
+```
+--
+
+### What Javascript isn't:
+* A client-only programming language.
+* .red[**Java**]. Java and javascript are completely unrelated.
+
+---
+
+class: middle, center
+# A few more things about javascript
 
