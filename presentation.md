@@ -34,7 +34,7 @@ class: center
 
 - A webpage is just a **static document** containing
 formatted text, images and links to other webpages.
-The contents of a webpage and how it should appear on the screen are described
+The contents of a webpage and how they should appear on the screen are described
 in *HTML* and *CSS*.
 --
 
@@ -68,7 +68,6 @@ from the server each time the user wants for something to happen.
 ## .clear.center[Webpages are complete applications]
 --
 class: center
---
 
 *Thanks to...*
 --
@@ -140,7 +139,7 @@ how the webpage will look.
 a webpage should look.
 * Can be included directly in HTML `<style>` tags or referenced from an
 external .css file
-* Is a series of rules of the type *All header elements should be bold and red"
+* Is a series of rules of the type *All header elements should be bold and red*
 
 --
 
@@ -151,7 +150,7 @@ h1 {
   font-weight: bold;
 }
 
-* em.somestyleclass {
+*em.somestyleclass {
   font-style: italic;
   color: blue;
 }
@@ -175,8 +174,7 @@ intended to be included in webpages. Javascript **can run inside the browser**
 and all modern browsers support javascript.
 * Like CSS, it can be included directly in an HTML `<script>` tag,
 or referenced from a .js file.
-* Dynamic, duck typing. Not really objected oriented, but
-similar to OOP languages.
+* Dynamic, duck typing. Object-Oriented (well, almost).
 
 --
 
@@ -192,11 +190,280 @@ console.log([1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(isPrime));
 --
 
 ### What Javascript isn't:
-* A client-only programming language.
+* A clientside-only programming language. Javascript can also be used on the backend.
 * .red[**Java**]. Java and javascript are completely unrelated.
 
 ---
 
 class: middle, center
-# A few more things about javascript
+# Introduction to Javascript
+
+---
+
+# Primitive types, variables, operators
+
+* Five primitive types: **Numbers** (3.14), **Booleans** (true/false), **Strings**
+("CubeSat"), **null**, **undefined**
+--
+
+* Variables are declared with the `var` keyword.
+```javascript
+var someNumber = 2;
+var aString = "Hello, world";
+var mystery; //undefined
+```
+When no initial value is specied, a variable will have the value undefined.
+--
+
+* Common operators:
+```javascript
+var a = (2 + 3) * 8.00 / 2; // 20
+var b = "Hello, " + "world."; // "Hello, world"
+var c = (12 <= 8) || (3.8 < 4) && true; // true
+var d = "42" == 42; // true - == does not care about types
+var e = "42" === 42; // false - === compares both value & type
+```
+Unless you really know what you're doing, always use `===` for comparison.
+---
+# Type conversions
+* **Dynamic typing** - variables can change types, and we don't need to state their type when declaring them:
+```javascript
+var answer = 42;
+// Some code, and then:
+answer = "The answer to life, the universe and everything";
+```
+--
+* Javascript does **type conversions** automatically:
+```javascript
+var lyrics = "I got " + 99 + " problems";
+```
+--
+Be .red[**very careful**]:
+```javascript
+var x = ("100" - 5) + 5;
+var y = ("100" + 5) - 5;
+```
+--
+Here x will evaluate to 100, y will evaluate to 1000.
+That's because **+** is both the addition and concatenation.
+
+---
+# Conditionals and loops
+If conditionals, for and while loops are very similar to other languages:
+
+```javascript
+var x = 42;
+for(var i=2;i<x;i++) {
+  if((x % i) === 0) { // % is the modulo operator
+    console.log(i + " divides " + x + "."); // console.log prints to the console
+  } else {
+    console.log(i + " does not divide " + x + ".");
+  }
+}
+```
+Javascript also has do-while, for-of, try-catch, switch statements and the
+break and continue keywords behave as expected.
+There is no *block scope* in javascript (i.e. Variables defined
+inside a while loop will be accessible throughout the function)
+
+---
+# Arrays
+
+* Arrays in javascript are zero-indexed, do not have a fixed length and can
+contain elemtents of different types (because of dynamic typing). 
+
+```javascript
+var myArray = ['one', 2, 3.14];
+myArray.push('(fantastic) four'); //Adds to the end of the array
+myArray.push([5, 6, 7]); // Pushes the entire array as a single element
+for(var i = 0; i < myArray.length; i++) {
+  if(typeof myArray[i] === "string") console.log(myArray[i]);
+}
+```
+
+Other notable array methods include `.pop()`, `.reverse()`, `.shift()`, `.unshift()`,
+`sort()`, `.splice()`, `.concat()`, `.join()`, `.slice()`, `.indexOf()` and many others.
+
+---
+# Objects
+
+Objects are *named value containers*. Along with functions,
+objects are one of the most fundamental parts of javascript.
+
+```jabascript
+var satellite = {
+  position: {
+    x: 45.2,
+    y: 21.52
+  },
+  name: "Imperial CubeSat",
+  hasCrashed: false, // Not yet
+  images: [
+    {time: 1634, path: "/images/one.jpg"},
+    {time: 2312, path: "/images/two.jpg"}
+  ]
+};
+
+console.log(satellite.name); // Access the 'name' member of the object
+console.log(satellite["hasCrashed"]); // Works like an associative array too! 
+console.log(satellite.position["x"]); // or satellite.position.x
+
+satellite.images.push({time: 2314, path: "/images/three.jpg"});
+satellite.hasCrashed = true; // :O
+```
+--
+
+We'll take a closer look at objects later.
+
+---
+# Functions .small[(or *where things start to get interesting*)]
+
+Function definitions in javascript aren't all that different from other languages:
+
+```javascript
+function square(num) {
+  return num * num;
+}
+console.log(square(8)); // Yep, it's 64
+console.log(square(2, 3, 4)); // It's not error, the 2 is passed as the argument
+console.log(square()); // Not even that is an error! Returns NaN.
+```
+
+Arguments are always optional (i.e. no "not enough arguments passed" errors),
+and can be of any type so **be careful**.
+
+---
+
+# Functions .small[(or *where things start to get interesting*)]
+
+Variables defined inside a function are local, i.e. won't be accessible from
+outside the function (unless you forget the `var` keyword).
+Primitive types are passed by value. If a function changes a property
+of an object, the change will be visible outside the function.
+
+```javascript
+var satellitesInOrbit = 9001;
+
+function destroy(satellite, message) {
+  var localVar = "secret!";
+  satellite.hasCrashed = true;
+  satellitesInOrbit--;
+  message = "Kaboom";
+}
+
+var icyCube = {hasCrashed: false, type: "Cubesat"}, msg = "Happy Little Cubesat";
+destroy(icyCube, msg);
+
+console.log(icyCube.hasCrashed); // true - changed by the function
+console.log(msg); // "Happy Little Cubesat" - not changed by the function
+console.log(satellitesInOrbit); // 9000 - changed by the function
+console.log(localVar); // ReferenceError - is only accessible inside destroy
+```
+
+---
+
+# Functions .small[(or *where things start to get interesting*)]
+
+**Functions in javascript are first-class citizens**.
+They can be assigned to variables and object members and passed
+as arguments to functions.
+
+```javascript
+var square = function (x) {
+  return x * x;
+}
+
+applyToEach = function (array, f) {
+  for(var i = 0; i < array.length; i++) {
+    array[i] = f(array[i]);
+  }
+  return array;
+}
+
+console.log(applyToEach([2, 8, 100], square)); // [4, 64, 1000]
+console.log(applyToEach([2, 8, 100],
+    function (x) { return x * 2; })
+  ); // [4, 16, 200]
+```
+
+--
+
+`applyToEach` is basically an implemetation of Array.map():
+```javascript
+console.log([2, 8, 100].map(square));
+```
+Arrays also support functions like `.sort()`, `.filter()`, `.forEach()` which take other functions as arguments.
+
+---
+# More about objects
+
+* Almost **everything in javascript is an object**: Numbers, strings, arrays, even booleans.
+--
+
+* Another way to create an object is by using a **constructor function**.
+
+```javascript
+function Satellite(name, hasCrashed, position) {
+  this.name = name;
+  this.hasCrashed = hasCrashed;
+  this.position = position;
+  this.moveRight = function() { this.position.x++; };
+}
+
+var ourSat = new Satellite("IcyCube", false, {x: 0, y: 0});
+var uclSat = new Satellite("UglyCube", false, {x: 0, y: 0});
+
+ourSat.moveRight();
+console.log(ourSat.position.x); // 1
+console.log(uclSat.position.x); // 0
+```
+
+The moveRight function above *is assigned to an object's property* and
+is therefore called an *object method*. It can modify other properties of the
+object by using the `this` keyword.
+
+In the example above, *Satellite* is essentially an **object type**.
+(similar to a class)
+---
+
+# More about objects
+
+We can extend object types (i.e. add properties to all objects of
+this object type). by using the special **prototype property**
+on the object type.
+
+```javascript
+function Satellite(name, hasCrashed, position) {
+  this.name = name;
+  this.hasCrashed = hasCrashed;
+  this.position = position;
+  this.moveRight = function() { this.position.x++; };
+}
+
+var ourSat = new Satellite("IcyCube", false, {x: 0, y: 0});
+ourSat.moveLeft(); // Error: "undefined is not a function"
+*Satellite.prototype.moveLeft = function() { this.position.x--; }
+ourSat.moveLeft(); // Now it works - and we didn't have to create a new object
+
+console.log(ourSat.position.x); // -1
+```
+
+--
+
+This allows us to do much of what we can do with object oriented languages.
+
+---
+# Summarizing Objects
+* A **javascript object** is a **self contained entity** with its own properties.
+* **Object properties can also be functions**.
+The properties are then called **methods**.
+* An object can also be created by using the `new` operator on
+a **constructor function**.
+* Constructor functions are regular functions that usually use
+the `this` keyword to assign properties to the objects they will create.
+Essentially, they act as **object types**.
+* **Properties can be added to all objects of a certain kind** by using the
+special `.prototype` property on the constructor function.
+* There is no way to implement inheritance or private/protected/public members
+in Javascript. All properties are always public.
 
