@@ -245,11 +245,11 @@ var y = ("100" + 5) - 5;
 ```
 --
 Here x will evaluate to 100, y will evaluate to 1000.
-That's because **+** is both the addition and concatenation.
+That's because **+** is both the addition and concatenation operator.
 
 ---
 # Conditionals and loops
-If conditionals, for and while loops are very similar to other languages:
+* **If** conditionals, **for** and **while** loops are very similar to other languages:
 
 ```javascript
 var x = 42;
@@ -261,16 +261,16 @@ for(var i=2;i<x;i++) {
   }
 }
 ```
-Javascript also has do-while, for-of, try-catch, switch statements and the
+* Javascript also has do-while, for-of, try-catch, switch statements and the
 break and continue keywords behave as expected.
-There is no *block scope* in javascript (i.e. Variables defined
+* There is no *block scope* in javascript (i.e. Variables defined
 inside a while loop will be accessible throughout the function)
 
 ---
 # Arrays
 
 * Arrays in javascript are zero-indexed, do not have a fixed length and can
-contain elemtents of different types (because of dynamic typing). 
+contain elements of different types (because of dynamic typing). 
 
 ```javascript
 var myArray = ['one', 2, 3.14];
@@ -281,13 +281,14 @@ for(var i = 0; i < myArray.length; i++) {
 }
 ```
 
-Other notable array methods include `.pop()`, `.reverse()`, `.shift()`, `.unshift()`,
+* Other notable array methods include `.pop()`, `.reverse()`, `.shift()`, `.unshift()`,
 `sort()`, `.splice()`, `.concat()`, `.join()`, `.slice()`, `.indexOf()` and many others.
 
 ---
 # Objects
 
-Objects are *named value containers*. Along with functions,
+* **Objects** are unordered collections of name-value pairs called properties.
+* Along with functions,
 objects are one of the most fundamental parts of javascript.
 
 ```jabascript
@@ -318,7 +319,9 @@ We'll take a closer look at objects later.
 ---
 # Functions .small[(or *where things start to get interesting*)]
 
-Function definitions in javascript aren't all that different from other languages:
+* Function definitions in javascript aren't all that different from other languages:
+* Arguments are always optional (i.e. no "not enough arguments passed" errors),
+and can be of any type so **be careful**.
 
 ```javascript
 function square(num) {
@@ -329,16 +332,14 @@ console.log(square(2, 3, 4)); // It's not error, the 2 is passed as the argument
 console.log(square()); // Not even that is an error! Returns NaN.
 ```
 
-Arguments are always optional (i.e. no "not enough arguments passed" errors),
-and can be of any type so **be careful**.
 
 ---
 
 # Functions .small[(or *where things start to get interesting*)]
 
-Variables defined inside a function are local, i.e. won't be accessible from
+* Variables defined inside a function are local, i.e. won't be accessible from
 outside the function (unless you forget the `var` keyword).
-Primitive types are passed by value. If a function changes a property
+* Primitive types are passed by value. If a function changes a property
 of an object, the change will be visible outside the function.
 
 ```javascript
@@ -467,3 +468,115 @@ special `.prototype` property on the constructor function.
 * There is no way to implement inheritance or private/protected/public members
 in Javascript. All properties are always public.
 
+---
+
+# Type detection and duck typing
+
+* We can use the `typeof` operator to **check the type of an object**.
+```javascript
+console.log(typeof 23.2); // "number"
+console.log(typeof "CubeSat"); // "string"
+console.log(typeof undefined); // "undefined"
+console.log(typeof {name: "Anna"}); // "object"
+console.log(typeof null); // "object" - is a bug kept for compatibility
+```
+* `typeof` **can only distinguish primitive types**
+and can not distinguish between different types of objects.
+* **Duck typing**: If it walks, swims and quacks like a duck, it's a duck.
+We can check if the properties of an object are what we expect them to be,
+but there's no need to check if an object is of a certain type.
+
+---
+
+# HTML5 Canvas
+
+* The HTML5 `<canvas>` element is a container for drawing graphics: a rectangular area we can draw on.
+* To draw on a canvas, we first need to incude in the HTML:
+```html
+<canvas id="screen" width="400" height="400">
+</canvas>
+```
+* We can then draw on the canvas with Javascript:
+```javascript
+var canvas = document.getElementById("screen");
+var context = canvas.getContext("2d"); // returns a CanvasRenderingContext2D
+context.fillStyle = "#3399FF";
+context.fillRect(5, 5, 10, 10);
+```
+---
+class: middle, center
+
+# Example
+---
+
+```javascript
+function Vector2(x, y) {
+  this.x = x;
+  this.y = y;
+  this.multiplyScalar = function (lambda) {
+    this.x *= lambda;
+    this.y *= lambda;
+    return this;
+  }
+  this.add = function(other) {
+    this.x += other.x;
+    this.y += other.y;
+    return this;
+  }
+  this.clone = function() {
+    return new Vector2(x, y);
+  }
+}
+```
+---
+
+```javascript
+function Satellite(name, position, velocity) {
+  this.name = name;
+  this.position = position;
+  this.velocity = velocity;
+  this.draw = function (context) {
+    context.fillRect(this.position.x - 5, this.position.y - 5,
+      10, 10);
+  }
+  this.update = function (delta) {
+    this.position.add(
+      this.velocity.clone.multiplyScalar(delta)
+    );
+  }
+}
+
+cubesat = new Satellite("CubeSat",
+  new Vector2(50, 50), new Vector2(10, -5));
+
+function clearScreen(context) {
+  context.clearRect(0, 0, 400, 400);
+}
+
+function cycle(context) {
+  cubesat.update();
+  clearScreen(context);
+  cubesat.draw(context);
+}
+
+setInterval(cycle, 30);
+```
+
+---
+
+# Javascript resources
+* MDN: https://developer.mozilla.org/
+--
+
+* MDN: https://developer.mozilla.org/
+--
+
+* MDN: https://developer.mozilla.org/
+
+--
+
+### .center[That's all you'll ever need.]
+
+--
+
+# .center[Thank you :)!]
